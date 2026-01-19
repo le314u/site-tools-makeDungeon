@@ -10,9 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Passo 1: Puxar o código do repositório
       - name: Checkout site-tools-makeDungeon
         uses: actions/checkout@v4
 
+      # Passo 2: Verificar se o token está disponível
+      - name: Verifica token
+        env:
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+        run: |
+          if [ -z "$PERSONAL_TOKEN" ]; then
+            echo "❌ Token não encontrado!"
+            exit 1
+          else
+            echo "✅ Token carregado com sucesso."
+          fi
+
+      # Passo 3: Deploy usando peaceiris/actions-gh-pages
       - name: Deploy para /tools/makeDungeon
         uses: peaceiris/actions-gh-pages@v3
         with:
